@@ -663,6 +663,10 @@ class CHGNet(nn.Module):
     @classmethod
     def from_dict(cls, dct: dict, **kwargs) -> CHGNet:
         """Build a CHGNet from a saved dictionary."""
+        if "mlp_out_bias" in dct["model_args"] and "mlp_out_bias" in kwargs: #YL20240617 for loading owned trained models
+            del kwargs["mlp_out_bias"]
+        if "version" in dct["model_args"] and "version" in kwargs:
+            del kwargs["version"]
         chgnet = CHGNet(**dct["model_args"], **kwargs)
         chgnet.load_state_dict(dct["state_dict"])
         return chgnet
@@ -699,18 +703,22 @@ class CHGNet(nn.Module):
             ValueError: On unknown model_name.
         """
         checkpoint_path = {
+            #"0.3.0": "../pretrained/0.3.0/fine_tuning_0.3.0.pth.tar",
             "0.3.0": "../pretrained/0.3.0/chgnet_0.3.0_e29f68s314m37.pth.tar",
             "0.2.0": "../pretrained/0.2.0/chgnet_0.2.0_e30f77s348m32.pth.tar",
+            "fine_tuning_0.3.0": "../pretrained/fine_tuning_0.3.0/fine_tuning_0.3.0.pth.tar",
+            "lib2": "../pretrained/lib2/lib2.pth.tar"
+            #"0.3.0": "/home/yliu597/test_chgnet/debug_e_0_problem/train_test_for_fine_tuning_chgnet/further_optimize_best_model/bestE_epoch49_e76_f44_s219_m147.pth.tar",
+            #"0.2.0": "/home/yliu597/test_chgnet/debug_e_0_problem/train_test_for_fine_tuning_chgnet/further_optimize_best_model/bestE_epoch49_e76_f44_s219_m147.pth.tar",
         }.get(model_name)
-
         if checkpoint_path is None:
             raise ValueError(f"Unknown {model_name=}")
-
         model = cls.from_file(
             os.path.join(module_dir, checkpoint_path),
             # mlp_out_bias=True is set for backward compatible behavior but in rare
             # cases causes unphysical jumps in bonding energy. see
             # https://github.com/CederGroupHub/chgnet/issues/79
+            #mlp_out_bias=False,
             mlp_out_bias=model_name == "0.2.0",
             version=model_name,
         )

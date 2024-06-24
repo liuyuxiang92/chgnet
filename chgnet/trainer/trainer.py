@@ -310,9 +310,10 @@ class Trainer:
                 g.atom_frac_coord.requires_grad = requires_force
             graphs = [g.to(self.device) for g in graphs]
             targets = {k: self.move_to(v, self.device) for k, v in targets.items()}
-
+            #print('This is a test to check what is targets {targets}') #YL20240624 for LIB3 training error
             # compute output
             prediction = self.model(graphs, task=self.targets)
+            #print('This is a test to check what is prediction {prediction}') #YL20240624 for LIB3 training error
             combined_loss = self.criterion(targets, prediction)
 
             losses.update(combined_loss["loss"].data.cpu().item(), len(graphs))
@@ -399,6 +400,8 @@ class Trainer:
             # compute output
             prediction = self.model(graphs, task=self.targets)
             combined_loss = self.criterion(targets, prediction)
+            print(f'Validation target energy is {targets["e"]}') #YL20240613 for debug
+            print(f'Validation prediction energy is {prediction["e"]}') #YL20240613 for debug
 
             losses.update(combined_loss["loss"].data.cpu().item(), len(graphs))
             for key in self.targets:
@@ -649,6 +652,9 @@ class CombinedLoss(nn.Module):
         out = {"loss": 0.0}
         # Energy
         if "e" in targets:
+            print(f'Target energy is {targets["e"]}') #YL20240613 for debug
+            print(f'Prediction energy is {prediction["e"]}') #YL20240613 for debug
+
             if self.is_intensive:
                 out["loss"] += self.energy_loss_ratio * self.criterion(
                     targets["e"], prediction["e"]

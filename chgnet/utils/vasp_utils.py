@@ -130,8 +130,10 @@ def parse_vasp_dir(
             continue
 
         dataset["structure"].append(ionic_step["structure"])
-        dataset["uncorrected_total_energy"].append(ionic_step["e_0_energy"])
-        dataset["energy_per_atom"].append(ionic_step["e_0_energy"] / n_atoms)
+        #dataset["uncorrected_total_energy"].append(ionic_step["e_0_energy"])
+        #dataset["energy_per_atom"].append(ionic_step["e_0_energy"] / n_atoms)
+        dataset["uncorrected_total_energy"].append(ionic_step["e_fr_energy"]) #YL20240613 change e_0_energy to e_fr_energy
+        dataset["energy_per_atom"].append(ionic_step["e_fr_energy"] / n_atoms)
         dataset["force"].append(ionic_step["forces"])
         if mag_x_all != []:
             dataset["magmom"].append([site["tot"] for site in mag_x_all[index]])
