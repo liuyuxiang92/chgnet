@@ -3,7 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import numpy as np
+import pytest
 import torch
+import wandb
 from pymatgen.core import Lattice, Structure
 
 from chgnet.data.dataset import StructureData, get_train_val_test_loader
@@ -36,11 +38,12 @@ data = StructureData(
 )
 
 
-def test_trainer(tmp_path: Path) -> None:
+def test_trainer(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     chgnet = CHGNet.load()
     train_loader, val_loader, _test_loader = get_train_val_test_loader(
         data, batch_size=16, train_ratio=0.9, val_ratio=0.05
     )
+    extra_run_config = dict(some_other_hyperparam=42)
     trainer = Trainer(
         model=chgnet,
         targets="efsm",
@@ -48,20 +51,33 @@ def test_trainer(tmp_path: Path) -> None:
         criterion="MSE",
         learning_rate=1e-2,
         epochs=5,
+        wandb_path="test/run",
+        wandb_init_kwargs=dict(anonymous="must"),
+        extra_run_config=extra_run_config,
     )
-    dir_name = "test_tmp_dir"
-    test_dir = tmp_path / dir_name
-    trainer.train(train_loader, val_loader, save_dir=test_dir)
+    trainer.train(
+        train_loader,
+        val_loader,
+        save_dir=tmp_path,
+        save_test_result=tmp_path / "test-preds.json",
+    )
+    assert dict(wandb.config).items() >= extra_run_config.items()
     for param in chgnet.composition_model.parameters():
         assert param.requires_grad is False
-    assert test_dir.is_dir(), "Training dir was not created"
+    assert tmp_path.is_dir(), "Training dir was not created"
 
-    output_files = [file.name for file in test_dir.iterdir()]
+    output_files = [file.name for file in tmp_path.iterdir()]
     for prefix in ("epoch", "bestE_", "bestF_"):
         n_matches = sum(file.startswith(prefix) for file in output_files)
         assert (
             n_matches == 1
         ), f"Expected 1 {prefix} file, found {n_matches} in {output_files}"
+
+    # expect ImportError when passing wandb_path without wandb installed
+    err_msg = "Weights and Biases not installed. pip install wandb to use wandb logging"
+    with monkeypatch.context() as ctx, pytest.raises(ImportError, match=err_msg):  # noqa: PT012
+        ctx.setattr("chgnet.trainer.trainer.wandb", None)
+        _ = Trainer(model=chgnet, wandb_path="some-org/some-project")
 
 
 def test_trainer_composition_model(tmp_path: Path) -> None:
@@ -79,16 +95,14 @@ def test_trainer_composition_model(tmp_path: Path) -> None:
         learning_rate=1e-2,
         epochs=5,
     )
-    dir_name = "test_tmp_dir2"
-    test_dir = tmp_path / dir_name
     initial_weights = chgnet.composition_model.state_dict()["fc.weight"].clone()
     trainer.train(
-        train_loader, val_loader, save_dir=test_dir, train_composition_model=True
+        train_loader, val_loader, save_dir=tmp_path, train_composition_model=True
     )
     for param in chgnet.composition_model.parameters():
         assert param.requires_grad is True
 
-    output_files = list(test_dir.iterdir())
+    output_files = list(tmp_path.iterdir())
     weights_path = next(file for file in output_files if file.name.startswith("epoch"))
     new_chgnet = CHGNet.from_file(weights_path)
     for param in new_chgnet.composition_model.parameters():
