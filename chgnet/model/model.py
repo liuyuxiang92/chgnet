@@ -707,7 +707,11 @@ class CHGNet(nn.Module):
             "0.3.0": "../pretrained/0.3.0/chgnet_0.3.0_e29f68s314m37.pth.tar",
             "0.2.0": "../pretrained/0.2.0/chgnet_0.2.0_e30f77s348m32.pth.tar",
             "fine_tuning_0.3.0": "../pretrained/fine_tuning_0.3.0/fine_tuning_0.3.0.pth.tar",
-            "lib2": "../pretrained/lib2/lib2.pth.tar"
+            "lib2": "../pretrained/lib2/lib2.pth.tar",
+            "lib2_lib3": "../pretrained/lib2_lib3/lib2_lib3.pth.tar",
+            "fine_tuning_lib2_lib3": "../pretrained/fine_tuning_lib2_lib3/fine_tuning_lib2_lib3.pth.tar",
+            "lib2_lib3_combined": "../pretrained/lib2_lib3_combined/lib2_lib3_combined.pth.tar",
+            "lib2_lib7_combined": "../pretrained/lib2_lib7_combined/lib2_lib7_combined.pth.tar"
             #"0.3.0": "/home/yliu597/test_chgnet/debug_e_0_problem/train_test_for_fine_tuning_chgnet/further_optimize_best_model/bestE_epoch49_e76_f44_s219_m147.pth.tar",
             #"0.2.0": "/home/yliu597/test_chgnet/debug_e_0_problem/train_test_for_fine_tuning_chgnet/further_optimize_best_model/bestE_epoch49_e76_f44_s219_m147.pth.tar",
         }.get(model_name)
