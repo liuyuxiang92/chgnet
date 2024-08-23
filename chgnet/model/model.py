@@ -674,7 +674,7 @@ class CHGNet(nn.Module):
     @classmethod
     def from_file(cls, path: str, **kwargs) -> CHGNet:
         """Build a CHGNet from a saved file."""
-        state = torch.load(path, map_location=torch.device("cpu"))
+        state = torch.load(path, map_location=torch.device("cpu"), weights_only=True)
         return CHGNet.from_dict(state["model"], **kwargs)
 
     @classmethod
@@ -709,6 +709,44 @@ class CHGNet(nn.Module):
             "fine_tuning_0.3.0": "../pretrained/fine_tuning_0.3.0/fine_tuning_0.3.0.pth.tar",
             "lib2": "../pretrained/lib2/lib2.pth.tar",
             "lib2_lib3": "../pretrained/lib2_lib3/lib2_lib3.pth.tar",
+            "fine_tuning_lib2_100": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_100.pth.tar",
+            "fine_tuning_lib2_bestE_200": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_bestE_200.pth.tar",
+            "fine_tuning_lib2_bestE_436": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_bestE_436.pth.tar", #dispear
+            "fine_tuning_lib2_200": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_200.pth.tar",
+            "fine_tuning_lib2_300": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_300.pth.tar",
+            "fine_tuning_lib2_450": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_450.pth.tar",
+            "fine_tuning_lib2_1000_bestE_447": "../pretrained/fine_tuning_lib2/fine_tuning_lib2_1000_bestE_447.pth.tar",
+            "fine_tuning_lib2_screen_8_bestE_195": "../pretrained/fine_tuning_lib2_screen_8/fine_tuning_lib2_screen_8_bestE_195.pth.tar",
+            "fine_tuning_lib2_lib3_100": "../pretrained/fine_tuning_lib2_lib3/fine_tuning_lib2_lib3_100.pth.tar",
+            "fine_tuning_lib2_lib3_0.1_partial_restart_172": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_0.1_partial_restart_172.pth.tar",
+            "fine_tuning_lib2_lib3_partial_112": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_112.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300.pth.tar",
+            "fine_tuning_lib2_lib3_partial_829": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_829.pth.tar",
+            "fine_tuning_lib2_lib3_partial_100_0.05_lib4_lib7_fine_tuning_bestE_79": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_100_0.05_lib4_lib7_fine_tuning_bestE_79.pth.tar",
+            "fine_tuning_lib2_lib3_partial_100_0.25_lib4_lib7_fine_tuning_bestE_7": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_100_0.25_lib4_lib7_fine_tuning_bestE_7.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.05_lib4_lib7_fine_tuning_bestE_120": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.05_lib4_lib7_fine_tuning_bestE_120.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.05_lib4_lib7_fine_tuning_bestE_67": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.05_lib4_lib7_fine_tuning_bestE_67.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.05_lib4_lib7_fine_tuning_bestE_286": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.05_lib4_lib7_fine_tuning_bestE_286.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.10_lib4_lib7_fine_tuning_bestE_86": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.10_lib4_lib7_fine_tuning_bestE_86.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.10_lib4_lib7_fine_tuning_bestE_206": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.10_lib4_lib7_fine_tuning_bestE_206.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.15_lib4_lib7_fine_tuning_bestE_42": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.15_lib4_lib7_fine_tuning_bestE_42.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.15_lib4_lib7_fine_tuning_bestE_50": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.15_lib4_lib7_fine_tuning_bestE_50.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.15_lib4_lib7_fine_tuning_bestE_135": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.15_lib4_lib7_fine_tuning_bestE_135.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.20_lib4_lib7_fine_tuning_bestE_37": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.20_lib4_lib7_fine_tuning_bestE_37.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.20_lib4_lib7_fine_tuning_bestE_95": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.20_lib4_lib7_fine_tuning_bestE_95.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.25_lib4_lib7_fine_tuning_bestE_35": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.25_lib4_lib7_fine_tuning_bestE_35.pth.tar",
+            "fine_tuning_lib2_lib3_partial_300_0.25_lib4_lib7_fine_tuning_bestE_63": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_300_0.25_lib4_lib7_fine_tuning_bestE_63.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.05_lib4_lib7_fine_tuning_bestE_129": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.05_lib4_lib7_fine_tuning_bestE_129.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.05_lib4_lib7_fine_tuning_bestE_89": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.05_lib4_lib7_fine_tuning_bestE_89.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.10_lib4_lib7_fine_tuning_bestE_87": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.10_lib4_lib7_fine_tuning_bestE_87.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.10_lib4_lib7_fine_tuning_bestE_197": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.10_lib4_lib7_fine_tuning_bestE_197.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.15_lib4_lib7_fine_tuning_bestE_112": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.15_lib4_lib7_fine_tuning_bestE_112.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.20_lib4_lib7_fine_tuning_bestE_38": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.20_lib4_lib7_fine_tuning_bestE_38.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.25_lib4_lib7_fine_tuning_bestE_16": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.25_lib4_lib7_fine_tuning_bestE_16.pth.tar",
+            "fine_tuning_lib2_lib3_partial_600_0.25_lib4_lib7_fine_tuning_bestE_32": "../pretrained/fine_tuning_lib2_lib3_partial/fine_tuning_lib2_lib3_partial_600_0.25_lib4_lib7_fine_tuning_bestE_32.pth.tar",
+            "fine_tuning_lib2_plus_0.1_lib3_lib7_bestE_190": "../pretrained/fine_tuning_lib2_plus_partial_lib3_lib7/fine_tuning_lib2_plus_0.1_lib3_lib7_bestE_190.pth.tar",
+            "fine_tuning_lib2_plus_0.2_lib3_lib7_bestE_110": "../pretrained/fine_tuning_lib2_plus_partial_lib3_lib7/fine_tuning_lib2_plus_0.2_lib3_lib7_bestE_110.pth.tar",
             "fine_tuning_lib2_lib3": "../pretrained/fine_tuning_lib2_lib3/fine_tuning_lib2_lib3.pth.tar",
             "lib2_lib3_combined": "../pretrained/lib2_lib3_combined/lib2_lib3_combined.pth.tar",
             "lib2_lib7_combined": "../pretrained/lib2_lib7_combined/lib2_lib7_combined.pth.tar"
