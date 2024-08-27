@@ -563,9 +563,9 @@ class Trainer:
             mae_error (dict): dictionary that stores the MAEs
             save_dir (str): the directory to save trained weights
         """
-        for fname in os.listdir(save_dir):
-            if fname.startswith("epoch"):
-                os.remove(os.path.join(save_dir, fname))
+        #for fname in os.listdir(save_dir):
+        #    if fname.startswith("epoch"):
+        #        os.remove(os.path.join(save_dir, fname))
 
         err_str = "_".join(
             f"{key}{f'{mae_error[key] * 1000:.0f}' if key in mae_error else 'NA'}"
