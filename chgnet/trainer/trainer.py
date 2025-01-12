@@ -270,7 +270,7 @@ class Trainer:
         if save_dir is None:
             save_dir = f"{datetime.now():%m-%d-%Y}"
         os.makedirs(save_dir, exist_ok=True)
-
+        
         print(f"Begin Training: using {self.device} device")
         print(f"training targets: {self.targets}")
         self.model.to(self.device)
@@ -325,6 +325,7 @@ class Trainer:
 
             for key in self.targets:
                 self.training_history[key]["test"] = test_mae[key]
+            print(f"test_file ={test_file}")
             self.save(filename=os.path.join(save_dir, test_file))
 
             # Log test metrics to wandb
@@ -563,6 +564,7 @@ class Trainer:
             mae_error (dict): dictionary that stores the MAEs
             save_dir (str): the directory to save trained weights
         """
+        #YL20240925
         #for fname in os.listdir(save_dir):
         #    if fname.startswith("epoch"):
         #        os.remove(os.path.join(save_dir, fname))
@@ -580,10 +582,8 @@ class Trainer:
             for fname in os.listdir(save_dir):
                 if fname.startswith("bestE"):
                     os.remove(os.path.join(save_dir, fname))
-            shutil.copyfile(
-                filename,
-                os.path.join(save_dir, f"bestE_epoch{epoch}_{err_str}.pth.tar"),
-            )
+            shutil.copyfile(filename,os.path.join(save_dir, f"bestE_epoch{epoch}_{err_str}.pth.tar"),)
+            #print("check bestE")
         if mae_error["f"] == min(self.training_history["f"]["val"]):
             for fname in os.listdir(save_dir):
                 if fname.startswith("bestF"):
@@ -592,6 +592,7 @@ class Trainer:
                 filename,
                 os.path.join(save_dir, f"bestF_epoch{epoch}_{err_str}.pth.tar"),
             )
+            #print("check bestF")
 
     @classmethod
     def load(cls, path: str) -> Trainer:

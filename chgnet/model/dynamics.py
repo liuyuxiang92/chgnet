@@ -87,6 +87,8 @@ class CHGNetCalculator(Calculator):
         device = determine_device(use_device=use_device, check_cuda_mem=check_cuda_mem)
         self.device = device
 
+        print(f"{use_device} is device")
+
         # Move the model to the specified device
         self.model = (model or CHGNet.load(verbose=False)).to(self.device)
         self.model.graph_converter.set_isolated_atom_response(on_isolated_atoms)
